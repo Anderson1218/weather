@@ -2,6 +2,8 @@ const path = require('path');
 const express = require('express');
 const app = express();
 const hbs = require('hbs');
+const forecast = require('./utils/forecast');
+const geocode = require('./utils/geocode');
 
 
 //define path for Express config
@@ -43,6 +45,47 @@ app.get('/help/*', (req, res) => {
         title: '404',
         name: 'Anderson',
         error: 'help article not found'
+    });
+});
+
+app.get('/weather', (req, res) => {
+    if(!req.query.address) {
+        //prevent from sending response to client twice
+        return res.send({
+            error: 'you must provide address'
+        });
+    }
+    //use ES6 default parameters to handle the case that second argument is not an object
+    geocode(req.query.address, (error, { latitude, longitude, location } = {}) => {
+        if (error) {
+            return res.send({
+                error
+            });
+        }
+
+        forecast(latitude, longitude, (error, forecastData) => {
+            if (error) {
+                return res.send({
+                    error
+                });
+            }
+            res.send({
+                forecast: forecastData,
+                location
+            });
+        })
+    })
+});
+
+app.get('/products', (req, res) => {
+    if(!req.query.search) {
+        //prevent from sending response to client twice
+        return res.send({
+            error: 'you must ....'
+        });
+    }
+    res.send({
+        products: []
     });
 });
 
