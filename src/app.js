@@ -17,7 +17,7 @@ hbs.registerPartials(partialsPath);
 //setup static directory to serve
 app.use(express.static(publicDirectoryPath));
 
-app.get('', (req, res) => {
+app.get('', (req, res) => {  
     res.render('index',{
         title: 'hello world',
         name: 'Anderson'
@@ -35,6 +35,22 @@ app.get('/help', (req, res) => {
     res.render('help', {
         title: 'help',
         name: 'Anderson'
+    });
+});
+
+app.get('/help/*', (req, res) => {
+    res.render('404', {
+        title: '404',
+        name: 'Anderson',
+        error: 'help article not found'
+    });
+});
+
+app.get('*',(req, res) => {
+    res.render('404', {
+        title: '404',
+        name: 'Anderson',
+        error: 'page not found'
     });
 });
 
