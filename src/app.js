@@ -15,13 +15,23 @@ app.set('view engine', 'hbs');
 app.use(express.static(path.join(__dirname, '../public')));
 
 app.get('', (req, res) => {
-    res.render('index');
+    res.render('index',{
+        title: 'hello',
+        name: 'Anderson'
+    });
 });
 
-app.get('', (req, res) => {
-    res.send('<h2>hellooooo!</h2>');
+app.get('/about', (req, res) => {
+    res.render('about', {
+
+    });
 });
 
+app.get('/help', (req, res) => {
+    res.render('help', {
+        
+    });
+});
 
 app.listen(3000, () => {
     console.log('start listen');
